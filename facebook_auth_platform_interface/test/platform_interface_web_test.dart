@@ -16,7 +16,8 @@ void main() {
     late bool isLogged;
     setUp(() {
       isLogged = false;
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "login":
             isLogged = true;
@@ -30,13 +31,16 @@ void main() {
           case "getUserData":
             return isLogged ? MockData.userData : {};
         }
+        return null;
       });
     });
 
     test('login ok', () async {
       final instance = FacebookAuthPlatform.getInstance();
-      AccessToken? accessToken = await FacebookAuthPlatform.instance.accessToken;
-      Map<String, dynamic> userData = await FacebookAuthPlatform.instance.getUserData();
+      AccessToken? accessToken =
+          await FacebookAuthPlatform.instance.accessToken;
+      Map<String, dynamic> userData =
+          await FacebookAuthPlatform.instance.getUserData();
       expect(accessToken, null);
       expect(userData.length == 0, true);
       final loginResult = await instance.login();
