@@ -24,7 +24,8 @@ void main() {
 
     setUp(() {
       facebookAuth = FacebookAuthPlatform.getInstance();
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "login":
             throw PlatformException(code: "FAILED", message: 'failed');
@@ -33,6 +34,7 @@ void main() {
           case "getUserData":
             throw PlatformException(code: "FAILED", message: 'failed');
         }
+        return null;
       });
     });
 
@@ -67,7 +69,8 @@ void main() {
       isLogged = false;
       isAutoLogAppEventsEnabled = false;
       facebookAuth = FacebookAuthPlatform.getInstance();
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "login":
             isLogged = true;
@@ -96,6 +99,7 @@ void main() {
               isAutoLogAppEventsEnabled = call.arguments['enabled'];
             }
         }
+        return null;
       });
     });
 

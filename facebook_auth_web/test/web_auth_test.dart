@@ -1,6 +1,8 @@
 @TestOn('browser')
 
-import 'dart:js' as js;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+
 import 'package:flutter_facebook_auth_platform_interface/flutter_facebook_auth_platform_interface.dart';
 import 'package:flutter_facebook_auth_web/flutter_facebook_auth_web.dart';
 
@@ -9,6 +11,8 @@ import 'mock/mock_data.dart';
 
 /// create a new instance of FacebookAuthPlugin with Mock Data
 FlutterFacebookAuthPlugin getPlugin() => FlutterFacebookAuthPlugin();
+
+JSObject get _fb => globalContext['FB'] as JSObject;
 
 void main() {
   group('init', () {
@@ -29,7 +33,7 @@ void main() {
         version: 'v13',
       );
       final initialized = plugin.isWebSdkInitialized;
-      js.context['FB']['init'] = js.allowInterop((js.JsObject options) {});
+      _fb['init'] = ((JSObject options) {}).toJS;
 
       expect(initialized, true);
     });
@@ -38,65 +42,58 @@ void main() {
     late bool isLogged = false;
     setUp(
       () {
-        js.context['FB']['init'] = js.allowInterop((js.JsObject options) {});
-        js.context['FB']['login'] = js.allowInterop((js.JsFunction fn, _) {
+        _fb['init'] = ((JSObject options) {}).toJS;
+        _fb['login'] = ((JSFunction fn, JSAny? _) {
           isLogged = true;
-          fn.apply(
-            [
-              js.JsObject.jsify({
-                'status': 'connected',
-                'authResponse': MockData.accessToken,
-              })
-            ],
+          fn.callAsFunction(
+            null,
+            {
+              'status': 'connected',
+              'authResponse': MockData.accessToken,
+            }.jsify(),
           );
-        });
+        }).toJS;
 
-        js.context['FB']['logout'] = js.allowInterop((js.JsFunction fn) {
+        _fb['logout'] = ((JSFunction fn) {
           isLogged = false;
-          fn.apply(
-            [js.JsObject.jsify({})],
+          fn.callAsFunction(
+            null,
+            <String, dynamic>{}.jsify(),
           );
-        });
+        }).toJS;
 
-        js.context['FB']['api'] =
-            js.allowInterop((String request, js.JsFunction fn) {
+        _fb['api'] = ((String request, JSFunction fn) {
           if (request == "/me/permissions") {
-            fn.apply(
-              [
-                js.JsObject.jsify(MockData.permissions),
-              ],
+            fn.callAsFunction(
+              null,
+              MockData.permissions.jsify(),
             );
           } else {
-            fn.apply(
-              [
-                js.JsObject.jsify(MockData.userData),
-              ],
+            fn.callAsFunction(
+              null,
+              MockData.userData.jsify(),
             );
           }
-        });
+        }).toJS;
 
-        js.context['FB']['getLoginStatus'] = js.allowInterop(
-          (js.JsFunction fn) {
-            if (isLogged) {
-              fn.apply(
-                [
-                  js.JsObject.jsify({
-                    'status': 'connected',
-                    'authResponse': MockData.accessToken,
-                  })
-                ],
-              );
-            } else {
-              fn.apply(
-                [
-                  js.JsObject.jsify({
-                    'status': 'unknown',
-                  }),
-                ],
-              );
-            }
-          },
-        );
+        _fb['getLoginStatus'] = ((JSFunction fn) {
+          if (isLogged) {
+            fn.callAsFunction(
+              null,
+              {
+                'status': 'connected',
+                'authResponse': MockData.accessToken,
+              }.jsify(),
+            );
+          } else {
+            fn.callAsFunction(
+              null,
+              {
+                'status': 'unknown',
+              }.jsify(),
+            );
+          }
+        }).toJS;
       },
     );
     test('login request', () async {
