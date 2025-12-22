@@ -17,7 +17,7 @@ dependencies:
     git:
       url: https://github.com/kleverstock/flutter-facebook-auth.git
       path: facebook_auth_platform_interface
-      ref: master
+      ref: deps/android-sdk-36
 
   # flutter_facebook_auth_platform_interface:
   #   path: ../facebook_auth_platform_interface
