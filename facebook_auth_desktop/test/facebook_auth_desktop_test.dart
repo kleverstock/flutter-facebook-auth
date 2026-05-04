@@ -32,14 +32,18 @@ void main() {
   test(
     'login > ok',
     () async {
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "signIn":
             return 'https://www.facebook.com/connect/login_success.html#access_token=EAAS5elFDcaYBAK1H14Xsv7JWqGFtppMumfVEhczQKcxvgAr454EHrnlwV9T3Wz9ZAJ8uNRhEFBOiLMKagM6ZBYIYZCM7VR2DL88aVtrT0iADG93hMeEChBofpJPyymQHZANp26zchVXcGVWssftG7IwGJXeji4immsyZA6RCZCJ7SeIpsR8NUd53mZBhjSZBXaNYq01ZCsM2zpQZDZD&data_access_expiration_time=1659801242&expires_in=3958&long_lived_token=EAAS5elFDcaYBAJZBqce4JM0D5PNq11UVboeax5T8dBCk9vrDtBCdNTzqpK0NUr0YSMZBPdDSMudqzv7ALVkSUgagC4wcgxHJVALtHfIpr6ONuhCnMZAce7oNbBXaUGgSh0v8JSrJHLlnRw9fENPpoYFvCry0A3SCZC3iQm7hKZAh8G8cnOcPK&granted_scopes=email%2Cpublic_profile&denied_scopes=&state=GQfBqzTSeOPlDfOazUKhRVtEmMBjYDi1';
         }
+        return null;
       });
 
-      secureStorageChannel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(secureStorageChannel,
+              (MethodCall call) async {
         switch (call.method) {
           case "write":
             return null;
@@ -47,6 +51,7 @@ void main() {
           case "read":
             return jsonEncode(mockAccessToken);
         }
+        return null;
       });
 
       final plugin = FacebookAuthDesktopPlugin(
@@ -57,7 +62,7 @@ void main() {
         appId: 'appId',
         cookie: true,
         xfbml: true,
-        version: 'v14.0',
+        version: 'v19.0',
       );
 
       final result = await plugin.login();
@@ -70,11 +75,13 @@ void main() {
   test(
     'login > cancelled',
     () async {
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "signIn":
             return null;
         }
+        return null;
       });
 
       final plugin = FacebookAuthDesktopPlugin(
@@ -96,11 +103,13 @@ void main() {
   test(
     'login > fails',
     () async {
-      channel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall call) async {
         switch (call.method) {
           case "signIn":
             return 'https://www.facebook.com/connect/login_success.html#access_token=EAAS5elFDcaYBAK1H14Xsv7JWqGFtppMumfVEhczQKcxvgAr454EHrnlwV9T3Wz9ZAJ8uNRhEFBOiLMKagM6ZBYIYZCM7VR2DL88aVtrT0iADG93hMeEChBofpJPyymQHZANp26zchVXcGVWssftG7IwGJXeji4immsyZA6RCZCJ7SeIpsR8NUd53mZBhjSZBXaNYq01ZCsM2zpQZDZD&data_access_expiration_time=1659801242&expires_in=3958&long_lived_token=EAAS5elFDcaYBAJZBqce4JM0D5PNq11UVboeax5T8dBCk9vrDtBCdNTzqpK0NUr0YSMZBPdDSMudqzv7ALVkSUgagC4wcgxHJVALtHfIpr6ONuhCnMZAce7oNbBXaUGgSh0v8JSrJHLlnRw9fENPpoYFvCry0A3SCZC3iQm7hKZAh8G8cnOcPK&granted_scopes=email%2Cpublic_profile&denied_scopes=&state=GQfBqzTSeOPlDfOazUKhRVtEmMBjYDi1';
         }
+        return null;
       });
 
       final plugin = FacebookAuthDesktopPlugin(
@@ -123,7 +132,9 @@ void main() {
     'login > logged',
     () async {
       int i = 0;
-      secureStorageChannel.setMockMethodCallHandler((MethodCall call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(secureStorageChannel,
+              (MethodCall call) async {
         switch (call.method) {
           case "delete":
             return null;
@@ -134,6 +145,7 @@ void main() {
             }
             return null;
         }
+        return null;
       });
 
       final plugin = FacebookAuthDesktopPlugin(
@@ -144,7 +156,7 @@ void main() {
         appId: 'appId',
         cookie: true,
         xfbml: true,
-        version: 'v13.0',
+        version: 'v19.0',
       );
 
       final accessToken = await plugin.accessToken;

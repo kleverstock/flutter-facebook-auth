@@ -1,4 +1,4 @@
-library facebook_auth_desktop;
+library;
 
 import 'dart:convert';
 import 'dart:math';
