@@ -31,7 +31,7 @@ void main() async {
       appId: "1329834907365798",
       cookie: true,
       xfbml: true,
-      version: "v14.0",
+      version: "v19.0",
     );
   }
   runApp(MyApp());
@@ -49,7 +49,7 @@ void main() async {
       appId: "YOUR_APP_ID",
       cookie: true,
       xfbml: true,
-      version: "v14.0",
+      version: "v19.0",
     );
   }
   runApp(MyApp());

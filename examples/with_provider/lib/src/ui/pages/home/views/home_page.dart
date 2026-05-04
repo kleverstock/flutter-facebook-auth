@@ -7,7 +7,7 @@ import 'package:flutter_facebook_auth_example/src/ui/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
