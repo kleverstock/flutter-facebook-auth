@@ -30,7 +30,7 @@ void main() {
         appId: '1234',
         cookie: true,
         xfbml: true,
-        version: 'v13',
+        version: 'v19',
       );
       final initialized = plugin.isWebSdkInitialized;
       _fb['init'] = ((JSObject options) {}).toJS;
@@ -102,7 +102,7 @@ void main() {
         appId: '1234',
         cookie: true,
         xfbml: true,
-        version: 'v10',
+        version: 'v19',
       );
       // check that the user is not logged
       expect(await plugin.accessToken, null);

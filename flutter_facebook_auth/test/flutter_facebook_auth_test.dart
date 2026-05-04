@@ -68,7 +68,7 @@ void main() {
         appId: "1233443",
         cookie: true,
         xfbml: true,
-        version: "v13.0",
+        version: "v19.0",
       );
       final result = await facebookAuth.login();
       expect(result.status, LoginStatus.success);

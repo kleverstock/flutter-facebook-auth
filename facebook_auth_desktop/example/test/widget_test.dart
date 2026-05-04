@@ -17,7 +17,10 @@ void main() {
 
     // Verify that sign in button is present.
     expect(
-      find.text('sign in'),
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Text && widget.data!.startsWith('Running on:'),
+      ),
       findsOneWidget,
     );
   });

@@ -62,7 +62,7 @@ void main() {
         appId: 'appId',
         cookie: true,
         xfbml: true,
-        version: 'v14.0',
+        version: 'v19.0',
       );
 
       final result = await plugin.login();
@@ -156,7 +156,7 @@ void main() {
         appId: 'appId',
         cookie: true,
         xfbml: true,
-        version: 'v13.0',
+        version: 'v19.0',
       );
 
       final accessToken = await plugin.accessToken;
