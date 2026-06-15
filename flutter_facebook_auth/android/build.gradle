@@ -21,6 +21,12 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 
+// to support apps on AGP < 9 and AGP >= 9
+def agpMajor = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0] as int
+if (agpMajor < 9) {
+   apply plugin: 'kotlin-android'
+}
+
 android {
     compileSdkVersion 36
 
@@ -39,6 +45,12 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 
